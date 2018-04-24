@@ -53,7 +53,7 @@ module StatusChecker
     average_response_time = responses.
                             map { |response| response[:response_time] }.
                             compact.
-                            inject(0, &:+) / MAX_REQUESTS
+                            inject(0, &:+) / responses.length
 
     health = responses.
              map { |response| response[:health] }.
