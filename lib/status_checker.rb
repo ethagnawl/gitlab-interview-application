@@ -2,12 +2,10 @@
 
 require "benchmark"
 require "byebug"
-require "net/http"
 require "status_checker/version"
-require "rest-client"
+require "status_checker/http_client"
 
-#TODO:
-# - timeout
+# TODO:
 # - rescue net/http errors
 # - convey health status (% !400/500 responses? named values?)
 
@@ -17,27 +15,33 @@ REQUEST_BUFFER = 10
 module StatusChecker
   module_function
 
-  def check!(http_client: RestClient::Request,
+  def check!(http_client: StatusChecker::HttpClient,
              time: Time,
+             timeout: 9,
              url:)
-    response_times = Array(0...MAX_REQUESTS).map do |request_n|
+    response_times = Array(0...MAX_REQUESTS).inject([]) do |memo, request_n|
+      begin
         before = time.now
         response = http_client.execute(method: :get,
-                                       timeout: 10,
+                                       timeout: timeout,
                                        url: url)
         after = time.now
         total = after - before
-        wait = ((Float(REQUEST_BUFFER) - total)).clamp(0, 10)
+        wait = ((Float(REQUEST_BUFFER) - total)).clamp(0, REQUEST_BUFFER)
 
-        puts "request-#{request_n}: response = #{response.inspect}"
+        puts "request-#{request_n}: response = #{response.code}"
         puts "request-#{request_n}: logging response time of #{total}"
         puts "sleep for #{wait} seconds"
 
         sleep wait
 
-        total
+        memo << total
+      rescue http_client::RequestTimeout => error
+        puts error.message
+        memo
+      end
     end
 
-    response_times.reduce(0, &:+) / MAX_REQUESTS
+    response_times.inject(0, &:+) / MAX_REQUESTS
   end
 end
