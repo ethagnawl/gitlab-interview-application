@@ -6,14 +6,17 @@ module StatusChecker
   module HttpClient
     module_function
 
-    class RequestTimeout < StandardError; end
+    class RequestException < RestClient::Exception; end
+    class RequestTimeout < RestClient::Exceptions::Timeout; end
 
     def execute(url:, method:, timeout: 10)
       RestClient::Request.execute(method: method,
                                   timeout: timeout,
                                   url: url)
     rescue RestClient::Exceptions::Timeout => error
-      raise HttpClient::RequestTimeout.new(error.message)
+      raise RequestTimeout.new(error.message)
+    rescue RestClient::Exception => error
+      raise RequestTimeout.new(error.message)
     end
   end
 end
