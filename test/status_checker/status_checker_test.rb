@@ -21,13 +21,15 @@ class StatusCheckerTest < Minitest::Test
                           url: "https://gitlab.com")
   end
 
-  def test_that_it_only_makes_six_requests
+  def test_that_it_only_makes_n_requests
+    requests = rand(10)
     FakeHttpClient.
       expects(:execute).
-      at_most(6).
+      at_most(requests).
       returns(OpenStruct.new(code: 200))
     StatusChecker::check!(http_client: FakeHttpClient,
                           logger: @test_logger,
+                          requests: requests,
                           url: "https://gitlab.com")
   end
 
@@ -54,16 +56,16 @@ class StatusCheckerTest < Minitest::Test
     FakeHttpClient.
       stubs(:execute).
       returns(OpenStruct.new(code: 200)).
-      then.raises(FakeHttpClient::RequestException).
       then.returns(OpenStruct.new(code: 200)).
       then.raises(FakeHttpClient::RequestTimeout).
+      then.returns(OpenStruct.new(code: 200)).
       then.returns(OpenStruct.new(code: 200)).
       then.raises(FakeHttpClient::RequestException)
 
     results = StatusChecker::check!(http_client: FakeHttpClient,
                                     logger: @test_logger,
                                     url: "https://gitlab.com")
-    expected = 3
+    expected = 2
     actual = results[:failed_requests]
 
     assert_equal(expected, actual)
