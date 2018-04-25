@@ -91,6 +91,18 @@ class StatusCheckerTest < Minitest::Test
     assert_equal(expected, actual)
   end
 
+  def test_that_it_gets_a_nil_average_response_time_when_every_request_fails
+    FakeHttpClient.
+      stubs(:execute).
+      raises(FakeHttpClient::RequestTimeout)
+    results = StatusChecker::check!(http_client: FakeHttpClient,
+                                    logger: @test_logger,
+                                    time: FakeTime,
+                                    url: "https://gitlab.com")
+
+    assert_nil results[:average_response_time]
+  end
+
   def test_it_handles_request_timeouts_gracefully
     FakeHttpClient.
       stubs(:execute).
