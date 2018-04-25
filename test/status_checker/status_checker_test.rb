@@ -72,7 +72,7 @@ class StatusCheckerTest < Minitest::Test
   end
 
   def test_that_it_averages_the_response_times
-    average_of_stubbed_response_times = 111
+    average_of_stubbed_response_times = 11.0
     FakeTime.
       stubs(:now).
       returns(1, 7,
