@@ -1,0 +1,24 @@
+#!/usr/bin/env ruby
+
+# frozen_string_literal: true
+
+$:.unshift File.expand_path("../../lib/", __FILE__)
+
+require "status_checker"
+
+url = ARGV[0]
+
+if !url
+  puts "A URL parameter is required. (e.g. `status_checker http://example.com`)"
+  exit!
+end
+
+puts "Status check is underway ..."
+
+results = StatusChecker::check!(url: url)
+
+puts "Status check has been completed!"
+puts "The results are as follows:"
+puts "Average response time: #{results[:average_response_time]}"
+puts "Successful requests: #{results[:successful_requests]}"
+puts "Failed requests: #{results[:failed_requests]}"
