@@ -2,6 +2,7 @@ PATH
   remote: .
   specs:
     status-checker (0.1.0)
+      rest-client (~> 2.0.2)
 
 GEM
   remote: https://rubygems.org/
@@ -58,7 +59,6 @@ DEPENDENCIES
   minitest (~> 5.0)
   mocha (~> 1.5)
   rake (~> 10.0)
-  rest-client (~> 2.0.2)
   rubocop (~> 0.48.1)
   status-checker!
 
