@@ -17,8 +17,8 @@ puts "Status check is underway ..."
 
 results = StatusChecker::check!(url: url)
 
-puts "Status check has been completed!"
+puts "Status check has been completed!\n\n"
 puts "The results are as follows:"
-puts "Average response time: #{results[:average_response_time]}"
+puts "Average response time: #{results[:average_response_time]}s"
 puts "Successful requests: #{results[:successful_requests]}"
 puts "Failed requests: #{results[:failed_requests]}"
