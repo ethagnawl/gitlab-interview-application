@@ -8,7 +8,7 @@ module StatusChecker
   module_function
 
   def check!(http_client: StatusChecker::HttpClient,
-             logger: StatusChecker::Logger.new(level: :info),
+             logger: StatusChecker::Logger.new(level: :error),
              requests: 6,
              request_buffer: 10,
              time: Time,
@@ -57,7 +57,8 @@ module StatusChecker
     # Note: this approach only takes "successful" response times into
     # consideration. You could make the case that "bad" response times
     # are also useful information, but that's a conversation for another day.
-    average_response_time = responses[:total_response_time] / requests
+    average_response_time = (responses[:total_response_time] / requests).
+                            round(2)
 
     {
       average_response_time: average_response_time,
