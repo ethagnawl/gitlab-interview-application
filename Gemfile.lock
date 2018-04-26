@@ -2,7 +2,8 @@ PATH
   remote: .
   specs:
     status-checker (0.1.0)
-      rest-client (~> 2.0.2)
+      log4r (= 1.1.10)
+      rest-client (= 2.0.2)
 
 GEM
   remote: https://rubygems.org/
@@ -52,14 +53,13 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bundler (~> 1.16)
-  byebug (~> 10.0.2)
-  log4r (~> 1.1.10)
-  m (~> 1.5.1)
-  minitest (~> 5.0)
-  mocha (~> 1.5)
-  rake (~> 10.0)
-  rubocop (~> 0.48.1)
+  bundler (= 1.16.1)
+  byebug (= 10.0.2)
+  m (= 1.5.1)
+  minitest (= 5.11.3)
+  mocha (= 1.5.0)
+  rake (= 10.5.0)
+  rubocop (= 0.48.1)
   status-checker!
 
 RUBY VERSION
