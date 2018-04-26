@@ -91,6 +91,36 @@ class StatusCheckerTest < Minitest::Test
     assert_equal(expected, actual)
   end
 
+  def test_that_it_raises_an_exception_for_4xx_response_codes
+    FakeHttpClient.
+      stubs(:execute).
+      returns(OpenStruct.new(code: 418))
+    results = StatusChecker::check!(http_client: FakeHttpClient,
+                                    logger: @test_logger,
+                                    requests: 1,
+                                    time: FakeTime,
+                                    url: "https://gitlab.com")
+
+    expected = 1
+    actual = results[:failed_requests]
+    assert_equal(expected, actual)
+  end
+
+  def test_that_it_raises_an_exception_for_5xx_response_codes
+    FakeHttpClient.
+      stubs(:execute).
+      returns(OpenStruct.new(code: 505))
+    results = StatusChecker::check!(http_client: FakeHttpClient,
+                                    logger: @test_logger,
+                                    requests: 1,
+                                    time: FakeTime,
+                                    url: "https://gitlab.com")
+
+    expected = 1
+    actual = results[:failed_requests]
+    assert_equal(expected, actual)
+  end
+
   def test_that_it_gets_a_nil_average_response_time_when_every_request_fails
     FakeHttpClient.
       stubs(:execute).
