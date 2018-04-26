@@ -4,8 +4,6 @@ require "log4r"
 
 module StatusChecker
   class Logger
-    attr_accessor :log
-
     def initialize(log_file: "log/status_checker.log", level: :info)
       @log = Log4r::Logger.new("logger")
       @log.add Log4r::FileOutputter.new("filelog", filename: log_file)
@@ -22,8 +20,26 @@ module StatusChecker
       when :fatal
         @log.level = Log4r::FATAL
       end
+    end
 
-      @log
+    def debug(message)
+      @log.debug(message)
+    end
+
+    def info(message)
+      @log.info(message)
+    end
+
+    def warn(message)
+      @log.warn(message)
+    end
+
+    def error(message)
+      @log.error(message)
+    end
+
+    def fatal(message)
+      @log.fatal(message)
     end
   end
 end

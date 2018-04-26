@@ -39,21 +39,21 @@ module StatusChecker
         request_buffer_remainder = (Float(request_buffer) - total).
                                    clamp(0, request_buffer)
 
-        logger.log.debug "request-#{request_n}: response was #{response}"
-        logger.log.info "request-#{request_n}: response time was #{total}"
-        percent_complete = (Float(request_n + 1) / Float(requests)).
+        logger.debug "#{url} - request-#{request_n} - response was #{response}"
+        logger.info "#{url} - request-#{request_n} - response time was #{total}"
+        percent_complete = (Float(request_n) / Float(requests)).
                            round(2) * 100
         status_message = "Process is #{percent_complete}% complete ..."
-        logger.log.info "request-#{request_n}: #{status_message}"
+        logger.info "#{url} - request-#{request_n} - #{status_message}"
 
-        sleep request_buffer_remainder
+        sleep request_buffer_remainder unless request_n == requests
 
         memo[:total_response_time] += total
         memo[:successful_requests] += 1
         memo
       rescue http_client::RequestTimeout,
              http_client::RequestException => error
-        logger.log.error error.message
+        logger.error error.message
         memo[:failed_requests] += 1
         memo
       end
