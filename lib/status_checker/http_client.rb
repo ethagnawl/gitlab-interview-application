@@ -13,9 +13,8 @@ module StatusChecker
       RestClient::Request.execute(method: method,
                                   timeout: timeout,
                                   url: url)
-    rescue RestClient::Exceptions::Timeout => error
-      raise RequestTimeout.new(error.message)
-    rescue RestClient::Exception => error
+    rescue RestClient::Exception,
+           RestClient::Exceptions::Timeout => error
       raise RequestTimeout.new(error.message)
     end
   end
