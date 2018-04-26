@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
-require "status_checker/version"
 require "status_checker/http_client"
 require "status_checker/logger"
+require "status_checker/version"
 
 module StatusChecker
   module_function
 
   def check!(http_client: StatusChecker::HttpClient,
              logger: StatusChecker::Logger.new(level: :error),
-             requests: 6,
              request_buffer: 10,
+             requests: 6,
              time: Time,
              url:)
     base_memo = { failed_requests: 0,
