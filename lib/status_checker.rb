@@ -43,9 +43,7 @@ module StatusChecker
         logger.log.info "request-#{request_n}: response time was #{total}"
         percent_complete = (Float(request_n + 1) / Float(requests)).
                            round(2) * 100
-        status_message = <<~MSG
-          Process is #{percent_complete}% complete ...
-        MSG
+        status_message = "Process is #{percent_complete}% complete ..."
         logger.log.info "request-#{request_n}: #{status_message}"
 
         sleep request_buffer_remainder
