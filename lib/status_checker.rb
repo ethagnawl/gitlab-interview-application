@@ -36,7 +36,8 @@ module StatusChecker
 
         after = time.now
         total = after - before
-        wait = (Float(request_buffer) - total).clamp(0, request_buffer)
+        request_buffer_remainder = (Float(request_buffer) - total).
+                                   clamp(0, request_buffer)
 
         logger.log.debug "request-#{request_n}: response was #{response}"
         logger.log.info "request-#{request_n}: response time was #{total}"
@@ -47,7 +48,7 @@ module StatusChecker
         MSG
         logger.log.info "request-#{request_n}: #{status_message}"
 
-        sleep wait
+        sleep request_buffer_remainder
 
         memo[:total_response_time] += total
         memo[:successful_requests] += 1
