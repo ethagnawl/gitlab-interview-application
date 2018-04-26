@@ -10,9 +10,10 @@ module StatusChecker
     class RequestTimeout < RestClient::Exceptions::Timeout; end
 
     def execute(url:, method:, timeout: 10)
-      RestClient::Request.execute(method: method,
-                                  timeout: timeout,
-                                  url: url)
+      response = RestClient::Request.execute(method: method,
+                                             timeout: timeout,
+                                             url: url)
+      raise RequestException if Integer(response.code) >= 400
     rescue RestClient::Exception,
            RestClient::Exceptions::Timeout => error
       raise RequestTimeout.new(error.message)
