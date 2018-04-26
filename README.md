@@ -16,6 +16,15 @@ and then report its findings using the form:
 ```
 
 ### Considerations
+Seeing as this is only the first round of the application process, I had a
+hard-ish stop on how many hours I was willing to sink into this exercise. There
+are lots of features and niceties I would like to have included but that just
+wasn't possible. I enumerate some of those features and some larger questions
+about this tool and potential improvements below.
+
+- The library currently only supports GETs but should be extended to cover
+_any_ HTTP method the user may want to use.
+
 - The library currently drops response times for "bad" requests to the floor and
 if no requests are successful, the average response time will be `nil`. It might
 make sense for "bad" response times to be factored into the overall average
@@ -31,10 +40,13 @@ blocking another.
 - Use Thor (or similar) to support command line options for number of requests,
 request buffer, log levels, help text, etc.
 
-- Use awesome_print (or similar) to add structure and style to output.
+- Use awesome_print (or similar) to add structure and style to output
+
+- Logs should use structured logging so they can be easily parsed/integrated
+with other tools. Also, perhaps each URL should have its own log?
 
 - Logs should be toggleable and moved outside the repository and into an
-appropriate directory on the host system
+appropriate directory on the host system. Also, consider supporting XDG.
 
 ## Installation
 
