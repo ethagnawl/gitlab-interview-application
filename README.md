@@ -29,9 +29,12 @@ be (e.g. ten seconds apart) as there would be no chance of one requests
 blocking another.
 
 - Use Thor (or similar) to support command line options for number of requests,
-the request buffer log levels, help text, etc.
+request buffer, log levels, help text, etc.
 
 - Use awesome_print (or similar) to add structure and style to output.
+
+- Logs should be toggleable and moved outside the repository and into an
+appropriate directory on the host system
 
 ## Installation
 
