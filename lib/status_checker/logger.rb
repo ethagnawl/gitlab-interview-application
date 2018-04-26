@@ -6,9 +6,9 @@ module StatusChecker
   class Logger
     attr_accessor :log
 
-    def initialize(level: :error)
+    def initialize(log_file: "log/status_checker.log", level: :info)
       @log = Log4r::Logger.new("logger")
-      @log.add Log4r::Outputter.stderr
+      @log.add Log4r::FileOutputter.new("filelog", filename: log_file)
 
       case level
       when :debug
