@@ -9,8 +9,8 @@ module StatusChecker
 
   def check(http_client: StatusChecker::HttpClient,
             logger: StatusChecker::Logger.new(level: :info),
-            request_buffer: 10,
-            requests: 6,
+            request_buffer: 6,
+            requests: 10,
             time: Time,
             url:)
     base_memo = { failed_requests: 0,

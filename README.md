@@ -10,13 +10,14 @@ and then report its findings.
 An example of its CLI usage is as follows:
 
 ```
-    status_checker https://gitlab.com
-    # ...
-    {
-      average_response_time: 0.2,
-      failed_requests: 1,
-      successful_requests: 9
-    }
+$ status_checker https://gitlab.com
+Status check is underway ...
+Status check has been completed!
+
+The results are as follows:
+Average response time: 0.09s
+Successful requests: 10
+Failed requests: 0
 ```
 
 ### Considerations

@@ -57,28 +57,36 @@ class StatusCheckerTest < Minitest::Test
       stubs(:execute).
       returns(OpenStruct.new(code: 200)).
       then.returns(OpenStruct.new(code: 200)).
+      then.returns(OpenStruct.new(code: 200)).
       then.raises(FakeHttpClient::RequestTimeout).
       then.returns(OpenStruct.new(code: 200)).
+      then.raises(FakeHttpClient::RequestException).
+      then.returns(OpenStruct.new(code: 200)).
+      then.raises(FakeHttpClient::RequestTimeout).
       then.returns(OpenStruct.new(code: 200)).
       then.raises(FakeHttpClient::RequestException)
 
     results = StatusChecker::check(http_client: FakeHttpClient,
                                    logger: @test_logger,
                                    url: "https://gitlab.com")
-    expected = 2
+    expected = 4
     actual = results[:failed_requests]
 
     assert_equal(expected, actual)
   end
 
   def test_that_it_averages_the_response_times
-    average_of_stubbed_response_times = 11.17
+    average_of_stubbed_response_times = 3.8
     FakeTime.
       stubs(:now).
-      returns(1, 7,
-              1, 11,
-              1, 5,
-              1, 42,
+      returns(1, 5,
+              1, 6,
+              1, 2,
+              1, 2,
+              1, 9,
+              1, 6,
+              1, 7,
+              1, 3,
               1, 6,
               1, 2)
     results = StatusChecker::check(http_client: FakeHttpClient,
