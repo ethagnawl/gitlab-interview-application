@@ -17,8 +17,8 @@ and then report its findings using the form:
 
 ### Considerations
 Seeing as this is only the first round of the application process, I had a
-hard-ish stop on how many hours I was willing to sink into this exercise. There
-are lots of features and niceties I would like to have included but that just
+limit on how many hours I was willing to sink into this exercise. There are
+lots of features and niceties I would like to have included but that just
 wasn't possible. I enumerate some of those features and some larger questions
 about this tool and potential improvements below.
 
