@@ -16,9 +16,9 @@ class StatusCheckerTest < Minitest::Test
     FakeHttpClient.
       expects(:execute).
       at_least_once.returns(OpenStruct.new(code: 200))
-    StatusChecker::check!(http_client: FakeHttpClient,
-                          logger: @test_logger,
-                          url: "https://gitlab.com")
+    StatusChecker::check(http_client: FakeHttpClient,
+                         logger: @test_logger,
+                         url: "https://gitlab.com")
   end
 
   def test_that_it_only_makes_n_requests
@@ -27,10 +27,10 @@ class StatusCheckerTest < Minitest::Test
       expects(:execute).
       at_most(requests).
       returns(OpenStruct.new(code: 200))
-    StatusChecker::check!(http_client: FakeHttpClient,
-                          logger: @test_logger,
-                          requests: requests,
-                          url: "https://gitlab.com")
+    StatusChecker::check(http_client: FakeHttpClient,
+                         logger: @test_logger,
+                         requests: requests,
+                         url: "https://gitlab.com")
   end
 
   def test_that_it_reports_successful_requests
@@ -43,9 +43,9 @@ class StatusCheckerTest < Minitest::Test
       then.returns(OpenStruct.new(code: 200)).
       then.raises(FakeHttpClient::RequestException)
 
-    results = StatusChecker::check!(http_client: FakeHttpClient,
-                                    logger: @test_logger,
-                                    url: "https://gitlab.com")
+    results = StatusChecker::check(http_client: FakeHttpClient,
+                                   logger: @test_logger,
+                                   url: "https://gitlab.com")
     expected = 3
     actual = results[:successful_requests]
 
@@ -62,9 +62,9 @@ class StatusCheckerTest < Minitest::Test
       then.returns(OpenStruct.new(code: 200)).
       then.raises(FakeHttpClient::RequestException)
 
-    results = StatusChecker::check!(http_client: FakeHttpClient,
-                                    logger: @test_logger,
-                                    url: "https://gitlab.com")
+    results = StatusChecker::check(http_client: FakeHttpClient,
+                                   logger: @test_logger,
+                                   url: "https://gitlab.com")
     expected = 2
     actual = results[:failed_requests]
 
@@ -81,10 +81,10 @@ class StatusCheckerTest < Minitest::Test
               1, 42,
               1, 6,
               1, 2)
-    results = StatusChecker::check!(http_client: FakeHttpClient,
-                                    logger: @test_logger,
-                                    time: FakeTime,
-                                    url: "https://gitlab.com")
+    results = StatusChecker::check(http_client: FakeHttpClient,
+                                   logger: @test_logger,
+                                   time: FakeTime,
+                                   url: "https://gitlab.com")
     expected = average_of_stubbed_response_times
     actual = results[:average_response_time]
 
@@ -95,11 +95,11 @@ class StatusCheckerTest < Minitest::Test
     FakeHttpClient.
       stubs(:execute).
       returns(OpenStruct.new(code: 418))
-    results = StatusChecker::check!(http_client: FakeHttpClient,
-                                    logger: @test_logger,
-                                    requests: 1,
-                                    time: FakeTime,
-                                    url: "https://gitlab.com")
+    results = StatusChecker::check(http_client: FakeHttpClient,
+                                   logger: @test_logger,
+                                   requests: 1,
+                                   time: FakeTime,
+                                   url: "https://gitlab.com")
 
     expected = 1
     actual = results[:failed_requests]
@@ -110,11 +110,11 @@ class StatusCheckerTest < Minitest::Test
     FakeHttpClient.
       stubs(:execute).
       returns(OpenStruct.new(code: 505))
-    results = StatusChecker::check!(http_client: FakeHttpClient,
-                                    logger: @test_logger,
-                                    requests: 1,
-                                    time: FakeTime,
-                                    url: "https://gitlab.com")
+    results = StatusChecker::check(http_client: FakeHttpClient,
+                                   logger: @test_logger,
+                                   requests: 1,
+                                   time: FakeTime,
+                                   url: "https://gitlab.com")
 
     expected = 1
     actual = results[:failed_requests]
@@ -125,10 +125,10 @@ class StatusCheckerTest < Minitest::Test
     FakeHttpClient.
       stubs(:execute).
       raises(FakeHttpClient::RequestTimeout)
-    results = StatusChecker::check!(http_client: FakeHttpClient,
-                                    logger: @test_logger,
-                                    time: FakeTime,
-                                    url: "https://gitlab.com")
+    results = StatusChecker::check(http_client: FakeHttpClient,
+                                   logger: @test_logger,
+                                   time: FakeTime,
+                                   url: "https://gitlab.com")
 
     assert_nil results[:average_response_time]
   end
@@ -137,17 +137,17 @@ class StatusCheckerTest < Minitest::Test
     FakeHttpClient.
       stubs(:execute).
       raises(FakeHttpClient::RequestTimeout.new("fake request timeout"))
-    StatusChecker::check!(http_client: FakeHttpClient,
-                          logger: @test_logger,
-                          url: "https://gitlab.com")
+    StatusChecker::check(http_client: FakeHttpClient,
+                         logger: @test_logger,
+                         url: "https://gitlab.com")
   end
 
   def test_it_handles_request_exceptions_gracefully
     FakeHttpClient.
       stubs(:execute).
       raises(FakeHttpClient::RequestException.new("fake request exception"))
-    StatusChecker::check!(http_client: FakeHttpClient,
-                          logger: @test_logger,
-                          url: "https://gitlab.com")
+    StatusChecker::check(http_client: FakeHttpClient,
+                         logger: @test_logger,
+                         url: "https://gitlab.com")
   end
 end

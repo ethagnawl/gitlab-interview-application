@@ -15,7 +15,7 @@ end
 
 puts "Status check is underway ..."
 
-results = StatusChecker::check!(url: url)
+results = StatusChecker::check(url: url)
 
 puts "Status check has been completed!\n\n"
 puts "The results are as follows:"

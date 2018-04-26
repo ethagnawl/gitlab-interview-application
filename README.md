@@ -5,9 +5,13 @@ The status_checker gem allows users to check the status of a web site or
 service.
 
 status_checker will ping the provided URL 10 times, over the span of 60 seconds
-and then report its findings using the form:
+and then report its findings.
+
+An example of its CLI usage is as follows:
 
 ```
+    status_checker https://gitlab.com
+    # ...
     {
       average_response_time: 0.2,
       failed_requests: 1,

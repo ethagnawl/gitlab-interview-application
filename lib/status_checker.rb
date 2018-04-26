@@ -7,12 +7,12 @@ require "status_checker/version"
 module StatusChecker
   module_function
 
-  def check!(http_client: StatusChecker::HttpClient,
-             logger: StatusChecker::Logger.new(level: :info),
-             request_buffer: 10,
-             requests: 6,
-             time: Time,
-             url:)
+  def check(http_client: StatusChecker::HttpClient,
+            logger: StatusChecker::Logger.new(level: :info),
+            request_buffer: 10,
+            requests: 6,
+            time: Time,
+            url:)
     base_memo = { failed_requests: 0,
                   successful_requests: 0,
                   total_response_time: 0 }
