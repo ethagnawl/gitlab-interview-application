@@ -28,6 +28,12 @@ module StatusChecker
         timeout = request_buffer - 1
         before = time.now
         response = http_client.execute(method: :get, timeout: timeout, url: url)
+
+        # rest-client raises an exception for 4/500 responses but we'll check
+        # anyways to be safe. This will also allow for more flexibility when
+        # accepting other `http_client`s which may not behave in the same way.
+        raise http_client::RequestException if Integer(response.code) >= 400
+
         after = time.now
         total = after - before
         wait = (Float(request_buffer) - total).clamp(0, request_buffer)
