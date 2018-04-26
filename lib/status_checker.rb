@@ -16,7 +16,7 @@ module StatusChecker
     base_memo = { failed_requests: 0,
                   successful_requests: 0,
                   total_response_time: 0 }
-    responses = Array(0...requests).inject(base_memo) do |memo, request_n|
+    responses = Array(1..requests).inject(base_memo) do |memo, request_n|
       # This approach to determining response time is very basic and a better
       # approach _could_ be to use the Date header. However, that approach
       # assumes a lot about the contents and reliability of the Date header
