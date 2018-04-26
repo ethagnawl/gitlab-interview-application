@@ -8,7 +8,7 @@ module StatusChecker
   module_function
 
   def check!(http_client: StatusChecker::HttpClient,
-             logger: StatusChecker::Logger.new(level: :error),
+             logger: StatusChecker::Logger.new(level: :info),
              request_buffer: 10,
              requests: 6,
              time: Time,
