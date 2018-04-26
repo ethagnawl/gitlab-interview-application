@@ -35,7 +35,7 @@ module StatusChecker
         raise http_client::RequestException if Integer(response.code) >= 400
 
         after = time.now
-        total = after - before
+        total = Float(after - before).round(2)
         request_buffer_remainder = (Float(request_buffer) - total).
                                    clamp(0, request_buffer)
 
