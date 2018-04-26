@@ -31,7 +31,7 @@ module StatusChecker
 
         # rest-client raises an exception for 4/500 responses but we'll check
         # anyways to be safe. This will also allow for more flexibility when
-        # accepting other `http_client`s which may not behave in the same way.
+        # accepting other http clients which may not behave in the same way.
         raise http_client::RequestException if Integer(response.code) >= 400
 
         after = time.now
