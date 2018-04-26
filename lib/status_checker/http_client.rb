@@ -14,6 +14,7 @@ module StatusChecker
                                              timeout: timeout,
                                              url: url)
       raise RequestException if Integer(response.code) >= 400
+      response
     rescue RestClient::Exception,
            RestClient::Exceptions::Timeout => error
       raise RequestTimeout.new(error.message)
